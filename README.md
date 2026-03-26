@@ -1,78 +1,141 @@
 # B1 Pipeline
 
-A-share B1 semi-automatic stock-selection pipeline.
+B1 半自动选股流水线。
 
-This project focuses on turning the daily B1 workflow into a reproducible pipeline:
+这是一个面向 **A 股日线级别 B1 机会挖掘** 的半自动研究/筛选项目，目标不是全自动下单，而是把“抓数 → 特征加工 → 候选筛选 → 图表导出 → review 打分 → 最终 shortlist”这条链路稳定下来，帮助人工决策更快、更一致。
 
-1. fetch daily market data
-2. preprocess indicators and structure features
-3. run a first-pass candidate filter
-4. export review charts and review inputs
-5. score and rank candidates
-6. produce a final shortlist for manual decision-making
+## 项目定位
 
-## Current scope
+这个项目当前更接近：
 
-Current pipeline stages are already connected end-to-end:
+- **研究型选股工程**，不是量化交易执行系统
+- **半自动 shortlist 生成器**，不是黑盒买卖信号机
+- **持续迭代的策略工程骨架**，不是最终定版产品
 
-- fetch
-- preprocess
-- preselect
-- export_charts
-- review
+当前核心目标是：
 
-Important note:
+> 每天产出一个质量足够高的 top list，帮助人工从中挑出更值得重点审查的 1~2 个机会。
 
-- `white_line / yellow_line` is currently an MVP approximation, not the final Tongdaxin formula implementation.
-- The current rules and scoring logic have been calibrated using user-confirmed B1 reference samples.
-- The current engineering objective is **not fully automatic trading**. It is a **semi-automatic ranking and review system** that helps produce a strong daily shortlist.
+---
 
-## Repository structure
+## 当前流水线
+
+目前已经打通的主要阶段：
+
+1. **fetch**：拉取股票基础信息、日线数据、市值快照
+2. **preprocess**：计算指标与结构特征
+3. **preselect**：做第一轮 B1 海选/候选池构建
+4. **export_charts**：导出 review 图表和 review 输入
+5. **review**：对候选池做二次打分与排序
+6. **summary**：输出最终 shortlist 供人工判断
+
+---
+
+## 设计原则
+
+### 1. 宁可在前面少做误杀，也不要把强票早早筛掉
+
+当前 preselect 层更强调 **减少漏票**，而不是一开始就用过严条件强砍。
+
+### 2. 更严格的质量判断，尽量后移到 review 层
+
+也就是说：
+
+- 海选层偏召回
+- review 层偏排序
+- 最终决策仍然保留给人工
+
+### 3. 这是辅助判断系统，不是假装“自动赚钱”的神棍脚本
+
+项目当前明确不是：
+
+- 自动交易系统
+- 收益承诺工具
+- 投资建议产品
+
+---
+
+## 当前策略理解（简版）
+
+当前 B1 方向更重视这些特征：
+
+- J 值低位，尤其深低位 / 负值
+- 价格回踩后仍保有结构支撑
+- 白线 / 黄线位置与距离关系
+- 缩量回调、时间换空间、小 K 消化
+- 靠近白线、黄线或关键支撑区域
+- 回调阶段的量价关系优于前期拉升阶段
+
+当前系统的判断理念大致是：
+
+> 好的 B1 不一定长得完全一样，但通常都有“趋势未死、回调可控、量能收敛、位置不差、盈亏比还在”这些共性。
+
+---
+
+## 项目结构
 
 ```text
 b1_pipeline/
-├─ config/          # strategy and pipeline config
-├─ scripts/         # runnable entry scripts
-├─ src/             # core pipeline code
-├─ tests/           # unit tests
-├─ data/            # local-only data directory (ignored by git)
-├─ logs/            # local logs (ignored by git)
+├─ config/          # 策略参数与流程配置
+├─ scripts/         # 可直接运行的入口脚本
+├─ src/             # 核心代码
+├─ tests/           # 测试
+├─ data/            # 本地数据（已被 git ignore）
+├─ logs/            # 本地日志（已被 git ignore）
+├─ CHANGELOG.md     # 变更记录
+├─ ROADMAP.md       # 迭代路线图
 └─ README.md
 ```
 
-## Quick start
+---
 
-### 1. Create environment
+## 环境准备
 
-Recommended: Python 3.11+
+推荐：
 
-Install dependencies:
+- Python 3.11+
+- Windows PowerShell / macOS / Linux 均可
+
+安装依赖：
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Configure Tushare token
+---
 
-This project expects your Tushare token from an environment variable.
+## Tushare Token 配置
 
-**Windows PowerShell**
+项目默认优先从环境变量读取：`TUSHARE_TOKEN`
+
+### Windows PowerShell
 
 ```powershell
 $env:TUSHARE_TOKEN="your_token_here"
 ```
 
-**macOS / Linux**
+### macOS / Linux
 
 ```bash
 export TUSHARE_TOKEN="your_token_here"
 ```
 
-You can also keep a local private config, but do **not** commit real tokens into Git.
+说明：
 
-### 3. Daily workflow
+- 不要把真实 token 提交进 git
+- 当前仓库中的 `config/fetch.yaml` 使用的是占位符写法
+- `.env.example` 仅作示意，不应存放真实私钥
 
-Recommended daily path after the 2026-03-25 refactor:
+---
+
+## 推荐日常跑法
+
+经过目前的工程实践，日常更推荐：
+
+- **增量抓取**，而不是每天 full refetch
+- **staged preprocess**，而不是一上来全市场 heavy full preprocess
+
+### 默认日常流程
 
 ```bash
 py scripts/run_fetch.py --end-date YYYY-MM-DD
@@ -83,91 +146,98 @@ py scripts/run_export_charts.py --date YYYY-MM-DD
 py scripts/run_review.py --date YYYY-MM-DD
 ```
 
-## Fetch modes
+### Fetch 模式
 
 ```bash
 py scripts/run_fetch.py --mode incremental --end-date YYYY-MM-DD
 py scripts/run_fetch.py --mode full --start-date 2025-01-01 --end-date YYYY-MM-DD
 ```
 
-Notes:
+说明：
 
-- `incremental` is the default mode and should be the normal daily path.
-- `full` is for repair / backfill / debugging, not daily use.
-- Incremental mode checks the latest local `trade_date` first and only fetches missing ranges.
+- `incremental`：默认模式，适合日常运行
+- `full`：适合修库、补历史、排障
+- 正常场景下，优先走 `incremental`
 
-## Current light gate
+---
 
-Current first-pass light filter:
+## 当前首轮轻筛（light gate）
+
+当前已确认的 light gate 方向：
 
 - `J < 20`
 - `white_line > yellow_line`
 - `close >= yellow_line * 0.9`
 
-This keeps the full-market first pass lighter, then runs heavy full preprocessing only on filtered candidates.
+目的不是一步到位选出最终票，而是：
 
-## Current strategy direction
+> 先把全市场压缩成更小的候选池，再把重型结构判断放到后续 full preprocess 和 review 去做。
 
-### Preselect layer
+---
 
-The preselect layer is designed to avoid missing strong B1 names too early.
+## 工程经验 / 坑点
 
-So the pipeline intentionally avoids overly strict hard filters such as:
+### 1. 工作目录必须对
 
-- forcing `white_above_yellow = true` in every case
-- forcing `close_above_yellow = true`
-- forcing `is_10d_min_volume = true`
+部分脚本使用项目相对路径。如果从错误目录启动，数据可能会被写进错误的 `data/` 目录。
 
-This is based on real reference samples showing that good B1 setups can appear:
+**建议：始终在项目根目录下运行脚本。**
 
-- above the white/yellow lines
-- between the white and yellow lines
-- near white-line support or yellow-line support
-- after a shallow break and fast stabilization
-- in time-for-space consolidations with low volatility and fast J reset
+### 2. `market_cap.csv` 应保持为全市场快照
 
-### Review layer
+历史上，subset fetch 曾有覆盖全市场市值快照的问题，进而导致后续筛选阶段大量股票 `market_cap` 变成 NaN。
 
-The review/scoring layer currently pays more attention to:
+当前处理原则：
 
-- low J values, especially deeply negative J
-- mild daily fluctuation and moderate close change
-- white/yellow position and distance
-- whether close is between the white/yellow lines or near support
-- shrinking volume behavior
-- time-for-space / sideways digestion / small-candle pullback style
+- 子集抓取（`--codes` / `--limit`）时，不重写全市场 `market_cap.csv`
+- 全市场日常增量流程可正常刷新快照
 
-## Practical notes
+---
 
-### 1. Working directory matters
+## 安全说明
 
-Some scripts use project-relative paths. Run them from the project root to avoid writing files into the wrong `data/` directory.
+仓库当前有这些保护：
 
-### 2. `market_cap.csv` should remain a full-market snapshot
+- `data/` 已忽略，不上传本地大数据
+- `logs/` 已忽略，不上传本地日志
+- token 默认从环境变量读取，不建议写死到版本库
 
-Historically, subset fetches could overwrite `data/raw/market_cap.csv` and break later filtering with missing market cap values.
+如果你要把仓库分享给其他人，建议继续遵守：
 
-Current behavior:
+1. 不提交真实 token
+2. 不提交本地数据快照
+3. 不提交私有实验日志
+4. 对外展示前先做一次公开内容审查
 
-- subset fetches (`--codes` / `--limit`) skip rewriting `market_cap.csv`
-- full-market daily runs can refresh the market-cap snapshot normally
+---
 
-## Security note
-
-- Do **not** commit real API tokens.
-- `data/` and `logs/` are intentionally ignored by git.
-- If you previously committed a real token, rotate it before making the repository public or sharing access broadly.
-
-## Tests
-
-Example:
+## 测试
 
 ```bash
 pytest tests
 ```
 
-## Project status
+当前测试仍然偏基础，后续应继续补：
 
-This repository is still an evolving research/engineering project.
+- 特征计算单测
+- 配置驱动测试
+- 关键评分逻辑回归测试
+- 样本 case 验证测试
 
-The current objective is to improve shortlist quality and front-of-list realism, so the final top 10 candidates better match real manual trading preference order.
+---
+
+## 当前状态
+
+项目仍在持续迭代中。
+
+当前阶段的重点不是“再加更多规则”，而是：
+
+- 提升前排 shortlist 的真实质量
+- 更准确地下调脏结构、低盈亏比、过度修复后的候选
+- 让 top list 更接近真实人工审美和实际出手意愿
+
+---
+
+## 免责声明
+
+本项目仅用于个人研究、策略工程整理和流程验证，不构成任何投资建议。
