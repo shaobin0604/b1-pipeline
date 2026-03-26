@@ -1,5 +1,9 @@
 # B1 Pipeline
 
+[![Tests](https://github.com/ysonglala/b1-pipeline/actions/workflows/tests.yml/badge.svg)](https://github.com/ysonglala/b1-pipeline/actions/workflows/tests.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.11%2B-blue.svg)](./pyproject.toml)
+
 B1 半自动选股流水线。
 
 这是一个面向 **A 股日线级别 B1 机会挖掘** 的半自动研究/筛选项目，目标不是全自动下单，而是把“抓数 → 特征加工 → 候选筛选 → 图表导出 → review 打分 → 最终 shortlist”这条链路稳定下来，帮助人工决策更快、更一致。
@@ -84,6 +88,7 @@ b1_pipeline/
 ├─ data/            # 本地数据（已被 git ignore）
 ├─ logs/            # 本地日志（已被 git ignore）
 ├─ docs/            # 额外说明文档
+├─ .github/         # CI workflows
 ├─ CHANGELOG.md     # 变更记录
 ├─ ROADMAP.md       # 迭代路线图
 ├─ CONTRIBUTING.md  # 贡献说明
