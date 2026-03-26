@@ -1,0 +1,33 @@
+﻿review:
+  strategy_name: "B1"
+  review_version: "B1 精选打分标准 v1"
+
+score_thresholds:
+  a_min: 90
+  b_min: 80
+  c_min: 70
+  d_min: 60
+
+decision_rules:
+  a_decision: "重点优先审核"
+  b_decision: "进入最终人工审核池"
+  c_decision: "进入观察名单"
+  d_decision: "淘汰"
+  e_decision: "淘汰"
+
+weights:
+  trend_structure: 25
+  volume_price: 25
+  white_yellow_position: 20
+  key_k: 20
+  risk_adjustment: 10
+
+summary:
+  top_n: 10
+  include_watchlist: true
+  include_excluded: true
+
+output:
+  review_dir_template: "data/review_output/{pick_date}"
+  review_file_template: "b1_review_{pick_date}.json"
+  summary_file_template: "summary.md"

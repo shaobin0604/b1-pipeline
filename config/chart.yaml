@@ -1,0 +1,28 @@
+﻿chart:
+  lookback_days: 60
+  width: 1600
+  height: 1000
+  dpi: 120
+  theme: "dark"
+
+panels:
+  show_volume: true
+  show_kdj: true
+  show_white_yellow: true
+
+style:
+  candle_up_color: "#ef5350"
+  candle_down_color: "#26a69a"
+  white_line_color: "#ffffff"
+  yellow_line_color: "#fdd835"
+  volume_up_color: "#ef5350"
+  volume_down_color: "#26a69a"
+
+title:
+  show_code: true
+  show_name: true
+  show_pick_date: true
+
+output:
+  chart_dir_template: "data/charts/{pick_date}"
+  chart_file_template: "{code}_day.png"

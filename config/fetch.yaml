@@ -1,0 +1,19 @@
+tushare:
+  token: "${TUSHARE_TOKEN}"
+
+market:
+  start_date: "2025-01-01"
+  end_date: null
+  exchange_scope: "A"
+  include_st: true
+
+output:
+  stock_basic_file: "data/raw/stock_basic.csv"
+  market_cap_file: "data/raw/market_cap.csv"
+  daily_dir: "data/raw/daily"
+
+fetch_options:
+  update_mode: "incremental"
+  retry_times: 3
+  sleep_seconds: 0.3
+  batch_size: 200

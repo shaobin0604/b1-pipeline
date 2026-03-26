@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local secrets / env
+.env
+.env.*
+*.local
+
+# Build / packaging
+build/
+dist/
+*.egg-info/
+
+# Logs
+logs/
+*.log
+
+# Project data outputs (large / local-only)
+data/
+
+# Optional generated artifacts
+reports/
+artifacts/
+
+# Jupyter
+.ipynb_checkpoints/

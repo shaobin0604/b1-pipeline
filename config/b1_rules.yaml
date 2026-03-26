@@ -1,0 +1,88 @@
+basic_filter:
+  exclude_st: true
+  min_market_cap: 2000000000
+  require_min_history_days: 120
+
+b1_core:
+  strategy_name: "B1"
+  j_threshold: 25
+  j_deep_negative_threshold: -3
+  require_white_above_yellow: true
+  require_close_above_yellow: false
+  allow_close_between_white_yellow: true
+  allow_near_white_or_yellow: true
+  process_override_enabled: true
+
+price_filter:
+  board_profiles:
+    limit_10:
+      close_change_pct_min: -3.0
+      close_change_pct_max: 3.0
+      amplitude_pct_max: 4.2
+      soft_close_change_pct_max: 3.5
+      soft_amplitude_pct_max: 5.0
+    limit_20:
+      close_change_pct_min: -4.5
+      close_change_pct_max: 4.5
+      amplitude_pct_max: 7.0
+      soft_close_change_pct_max: 5.0
+      soft_amplitude_pct_max: 8.0
+    limit_30:
+      close_change_pct_min: -6.0
+      close_change_pct_max: 6.0
+      amplitude_pct_max: 9.0
+      soft_close_change_pct_max: 7.0
+      soft_amplitude_pct_max: 10.0
+  prefer_close_positive: true
+
+volume_filter:
+  require_10d_min_volume: false
+  require_shrinking_volume: true
+  volume_ratio_vs_prev_day_max: 1.5
+  volume_ratio_vs_prev_5d_avg_max: 1.5
+  prefer_extreme_shrink: true
+
+pullback_rules:
+  min_pullback_days: 3
+  prefer_price_holding_sideways: true
+  allow_time_for_space: true
+  require_process_shrink_for_override: true
+
+trend_rules:
+  white_ema_span_1: 10
+  white_ema_span_2: 10
+  yellow_ma_1: 14
+  yellow_ma_2: 28
+  yellow_ma_3: 57
+  yellow_ma_4: 114
+  recent_cross_lookback_days: 5
+  white_yellow_distance_pct_max: 5.0
+  near_line_distance_pct_max: 2.5
+  strong_support_distance_pct_max: 1.2
+
+key_k_rules:
+  min_pct_change: 4.0
+  volume_ratio_threshold: 1.5
+  recent_lookback_days: 40
+  near_key_k_low_pct_max: 3.0
+  confluence_yellow_pct_max: 2.0
+
+building_wave_rules:
+  lookback_days: 30
+  attack_pct_min: 4.0
+  volume_ratio_min: 1.5
+  strong_body_pct_min: 3.8
+  upper_shadow_ratio_max: 0.28
+
+risk_rules:
+  overheat_3d_pct: 20
+  overheat_5d_pct: 30
+  overheat_fast_move_pct: 40
+  block_if_large_bearish_distribution: false
+  penalize_large_bearish_distribution: true
+  penalize_weak_bottom_build_volume: true
+  penalize_long_term_range_bound: true
+
+output:
+  candidate_file_template: "data/candidates/b1_candidates_{pick_date}.json"
+  max_candidates: 300

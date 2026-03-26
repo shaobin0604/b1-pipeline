@@ -1,0 +1,136 @@
+def _board_limit_type(code: str) -> str:
+    code = str(code).upper()
+    if code.startswith(("300", "301", "688")):
+        return "limit_20"
+    if code.startswith(("8", "4")):
+        return "limit_30"
+    return "limit_10"
+
+
+LIMIT_PCT_MAP = {
+    "limit_10": 10,
+    "limit_20": 20,
+    "limit_30": 30,
+}
+
+
+def build_review_input(row: dict, chart_path: str, processed_file: str | None = None):
+    board_type = _board_limit_type(row.get("code", ""))
+    return {
+        "code": row["code"],
+        "name": row.get("name"),
+        "pick_date": row.get("pick_date"),
+        "strategy": "B1",
+        "basic": {
+            "is_st": row.get("is_st"),
+            "market_cap": row.get("market_cap"),
+            "market_cap_unit": "CNY",
+            "industry": row.get("industry"),
+            "themes": row.get("themes", []),
+            "board_type": board_type,
+            "limit_pct": LIMIT_PCT_MAP.get(board_type, 10),
+        },
+        "daily": {
+            "open": row.get("open"),
+            "high": row.get("high"),
+            "low": row.get("low"),
+            "close": row.get("close"),
+            "pct_change": row.get("pct_change"),
+            "amplitude_pct": row.get("amplitude_pct"),
+            "volume": row.get("volume"),
+            "amount": row.get("amount"),
+            "price_range_5d_pct": row.get("price_range_5d_pct"),
+            "price_holding_sideways_5d": row.get("price_holding_sideways_5d"),
+            "close_change_3d_pct": row.get("close_change_3d_pct"),
+        },
+        "indicators": {
+            "k_value": row.get("k_value"),
+            "d_value": row.get("d_value"),
+            "j_value": row.get("j_value"),
+            "j_drop_3d": row.get("j_drop_3d"),
+            "white_line": row.get("white_line"),
+            "yellow_line": row.get("yellow_line"),
+            "white_above_yellow": row.get("white_above_yellow"),
+            "white_crossed_above_yellow_recently": row.get("white_crossed_above_yellow_recently"),
+            "white_yellow_distance_pct": row.get("white_yellow_distance_pct"),
+        },
+        "volume_features": {
+            "is_10d_min_volume": row.get("is_10d_min_volume"),
+            "volume_ratio_vs_prev_day": row.get("volume_ratio_vs_prev_day"),
+            "volume_ratio_vs_prev_5d_avg": row.get("volume_ratio_vs_prev_5d_avg"),
+            "down_vs_up_volume_ratio_5d": row.get("down_vs_up_volume_ratio_5d"),
+            "down_day_volume_lighter_than_up_day_5d": row.get("down_day_volume_lighter_than_up_day_5d"),
+            "pullback_vs_rally_volume_ratio": row.get("pullback_vs_rally_volume_ratio"),
+            "pullback_volume_lower_than_rally": row.get("pullback_volume_lower_than_rally"),
+            "volume_3d_trend_down": row.get("volume_3d_trend_down"),
+        },
+        "price_position": {
+            "close_above_white": row.get("close_above_white"),
+            "close_above_yellow": row.get("close_above_yellow"),
+            "close_between_white_yellow": row.get("close_between_white_yellow"),
+            "distance_to_white_pct": row.get("distance_to_white_pct"),
+            "distance_to_yellow_pct": row.get("distance_to_yellow_pct"),
+            "close_in_plus_minus_3pct": row.get("close_in_plus_minus_3pct"),
+            "close_positive": row.get("close_positive"),
+            "time_for_space_signal": row.get("time_for_space_signal"),
+        },
+        "key_k": {
+            "recent_key_k_exists": row.get("recent_key_k_exists"),
+            "recent_key_k_low": row.get("recent_key_k_low"),
+            "recent_key_k_age": row.get("recent_key_k_age"),
+            "recent_key_k_real_body_pct": row.get("recent_key_k_real_body_pct"),
+            "recent_key_k_volume_ratio": row.get("recent_key_k_volume_ratio"),
+            "distance_to_recent_key_k_low_pct": row.get("distance_to_recent_key_k_low_pct"),
+            "near_recent_key_k_low": row.get("near_recent_key_k_low"),
+            "key_k_support_confluence_with_yellow": row.get("key_k_support_confluence_with_yellow"),
+        },
+        "building_wave": {
+            "strong_attack_bar_count_30d": row.get("strong_attack_bar_count_30d"),
+            "weak_attack_upper_shadow_count_30d": row.get("weak_attack_upper_shadow_count_30d"),
+            "building_wave_quality_score": row.get("building_wave_quality_score"),
+            "building_wave_has_quality_attack": row.get("building_wave_has_quality_attack"),
+            "building_wave_upper_shadow_heavy": row.get("building_wave_upper_shadow_heavy"),
+            "recent_attack_bar_exists": row.get("recent_attack_bar_exists"),
+            "recent_attack_bar_age": row.get("recent_attack_bar_age"),
+            "recent_attack_bar_is_strong": row.get("recent_attack_bar_is_strong"),
+            "recent_attack_bar_upper_shadow_ratio": row.get("recent_attack_bar_upper_shadow_ratio"),
+            "recent_attack_bar_real_body_pct": row.get("recent_attack_bar_real_body_pct"),
+            "recent_attack_bar_volume_ratio": row.get("recent_attack_bar_volume_ratio"),
+            "recent_gap_attack_exists": row.get("recent_gap_attack_exists"),
+            "recent_gap_attack_age": row.get("recent_gap_attack_age"),
+            "recent_gap_attack_low": row.get("recent_gap_attack_low"),
+            "broke_recent_gap_attack_low": row.get("broke_recent_gap_attack_low"),
+            "recent_bearish_reversal_exists": row.get("recent_bearish_reversal_exists"),
+            "recent_bearish_reversal_age": row.get("recent_bearish_reversal_age"),
+            "pullback_heavy_volume_count_5d": row.get("pullback_heavy_volume_count_5d"),
+            "pullback_heavy_volume_max_consecutive_5d": row.get("pullback_heavy_volume_max_consecutive_5d"),
+            "heavy_bear_count_10d": row.get("heavy_bear_count_10d"),
+            "max_consecutive_heavy_bear_10d": row.get("max_consecutive_heavy_bear_10d"),
+            "double_volume_bull_count_30d": row.get("double_volume_bull_count_30d"),
+            "max_bear_volume_last_10d_vs_recent_attack_ratio": row.get("max_bear_volume_last_10d_vs_recent_attack_ratio"),
+            "drawdown_from_post_cross_high_pct": row.get("drawdown_from_post_cross_high_pct"),
+            "vertical_decline_with_heavy_volume": row.get("vertical_decline_with_heavy_volume"),
+            "rise_from_last_white_cross_pct": row.get("rise_from_last_white_cross_pct"),
+            "high_volume_sideways_after_big_run": row.get("high_volume_sideways_after_big_run"),
+            "recent_distribution_within_1m": row.get("recent_distribution_within_1m"),
+            "recent_distribution_count_1m": row.get("recent_distribution_count_1m"),
+            "climax_bear_after_acceleration": row.get("climax_bear_after_acceleration"),
+            "secondary_top_huge_bear": row.get("secondary_top_huge_bear"),
+            "stair_down_after_new_high": row.get("stair_down_after_new_high"),
+            "double_top_double_distribution": row.get("double_top_double_distribution"),
+            "top_green_long_red_short": row.get("top_green_long_red_short"),
+            "top_blowoff_reversal": row.get("top_blowoff_reversal"),
+            "peak_huge_volume_break_yellow_2d": row.get("peak_huge_volume_break_yellow_2d"),
+            "top_3day_stair_volume_distribution": row.get("top_3day_stair_volume_distribution"),
+            "overhead_supply_near_prev_high": row.get("overhead_supply_near_prev_high"),
+            "failed_breakout_overhead_supply": row.get("failed_breakout_overhead_supply"),
+            "overhead_heavy_volume_band": row.get("overhead_heavy_volume_band"),
+            "failed_reclaim_yellow_on_day2": row.get("failed_reclaim_yellow_on_day2"),
+            "supply_absorption_breakthrough": row.get("supply_absorption_breakthrough"),
+            "double_limit_then_high_volatility_sideways": row.get("double_limit_then_high_volatility_sideways"),
+        },
+        "files": {
+            "chart_day": chart_path,
+            "processed_file": processed_file,
+        }
+    }
