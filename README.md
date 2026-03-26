@@ -82,10 +82,18 @@ b1_pipeline/
 ├─ tests/           # 测试
 ├─ data/            # 本地数据（已被 git ignore）
 ├─ logs/            # 本地日志（已被 git ignore）
+├─ docs/            # 额外说明文档
 ├─ CHANGELOG.md     # 变更记录
 ├─ ROADMAP.md       # 迭代路线图
+├─ LICENSE          # 开源许可
 └─ README.md
 ```
+
+补充文档：
+
+- [CHANGELOG](./CHANGELOG.md)
+- [ROADMAP](./ROADMAP.md)
+- [Sample Outputs](./docs/sample_outputs.md)
 
 ---
 
