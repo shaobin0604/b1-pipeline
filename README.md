@@ -86,6 +86,8 @@ b1_pipeline/
 ├─ docs/            # 额外说明文档
 ├─ CHANGELOG.md     # 变更记录
 ├─ ROADMAP.md       # 迭代路线图
+├─ CONTRIBUTING.md  # 贡献说明
+├─ pyproject.toml   # 项目元数据与测试配置
 ├─ LICENSE          # 开源许可
 └─ README.md
 ```
@@ -94,6 +96,8 @@ b1_pipeline/
 
 - [CHANGELOG](./CHANGELOG.md)
 - [ROADMAP](./ROADMAP.md)
+- [Contributing](./CONTRIBUTING.md)
+- [Development Notes](./docs/development.md)
 - [Sample Outputs Guide](./docs/sample_outputs.md)
 - [Sanitized Example Artifacts](./examples/README.md)
 
@@ -110,6 +114,13 @@ b1_pipeline/
 
 ```bash
 pip install -r requirements.txt
+```
+
+或者使用可编辑安装：
+
+```bash
+pip install -e .
+pip install pytest
 ```
 
 ---
@@ -182,17 +193,18 @@ py scripts/run_fetch.py --mode full --start-date 2025-01-01 --end-date YYYY-MM-D
 
 ---
 
-## 当前首轮轻筛（light gate）
+## 测试
 
-当前已确认的 light gate 方向：
+```bash
+pytest tests
+```
 
-- `J < 20`
-- `white_line > yellow_line`
-- `close >= yellow_line * 0.9`
+当前测试仍然偏基础，后续应继续补：
 
-目的不是一步到位选出最终票，而是：
-
-> 先把全市场压缩成更小的候选池，再把重型结构判断放到后续 full preprocess 和 review 去做。
+- 特征计算单测
+- 配置驱动测试
+- 关键评分逻辑回归测试
+- 样本 case 验证测试
 
 ---
 
@@ -229,21 +241,6 @@ py scripts/run_fetch.py --mode full --start-date 2025-01-01 --end-date YYYY-MM-D
 2. 不提交本地数据快照
 3. 不提交私有实验日志
 4. 对外展示前先做一次公开内容审查
-
----
-
-## 测试
-
-```bash
-pytest tests
-```
-
-当前测试仍然偏基础，后续应继续补：
-
-- 特征计算单测
-- 配置驱动测试
-- 关键评分逻辑回归测试
-- 样本 case 验证测试
 
 ---
 

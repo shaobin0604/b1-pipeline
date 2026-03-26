@@ -1,6 +1,7 @@
-﻿pandas
-numpy
-pyyaml
-tushare
-matplotlib
-mplfinance
+pandas>=2.2,<3.0
+numpy>=1.26,<3.0
+pyyaml>=6.0,<7.0
+tushare>=1.4,<2.0
+matplotlib>=3.8,<4.0
+mplfinance>=0.12.10b0,<1.0
+pytest>=8.0,<9.0
