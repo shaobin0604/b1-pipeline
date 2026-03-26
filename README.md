@@ -4,9 +4,27 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-blue.svg)](./pyproject.toml)
 
-B1 半自动选股流水线。
+A-share B1 semi-automatic stock-selection pipeline.
 
-这是一个面向 **A 股日线级别 B1 机会挖掘** 的半自动研究/筛选项目，目标不是全自动下单，而是把“抓数 → 特征加工 → 候选筛选 → 图表导出 → review 打分 → 最终 shortlist”这条链路稳定下来，帮助人工决策更快、更一致。
+这是一个面向 **A 股日线级别 B1 机会挖掘** 的半自动研究/筛选项目。它不追求“自动下单”，而是把 **抓数 → 特征加工 → 候选筛选 → 图表导出 → review 打分 → shortlist 输出** 这条链路稳定下来，帮助人工决策更快、更一致。
+
+## TL;DR
+
+- **定位**：研究型选股工程，不是自动交易系统
+- **目标**：产出更靠谱的 daily top list，辅助人工精审
+- **当前特点**：偏半自动、偏 shortlist、偏持续迭代
+- **默认日常路径**：`incremental fetch -> light preprocess -> full preprocess -> preselect -> export_charts -> review`
+
+快速入口：
+
+- [CHANGELOG](./CHANGELOG.md)
+- [ROADMAP](./ROADMAP.md)
+- [Contributing](./CONTRIBUTING.md)
+- [Development Notes](./docs/development.md)
+- [Sample Outputs Guide](./docs/sample_outputs.md)
+- [Sanitized Example Artifacts](./examples/README.md)
+
+---
 
 ## 项目定位
 
@@ -96,15 +114,6 @@ b1_pipeline/
 ├─ LICENSE          # 开源许可
 └─ README.md
 ```
-
-补充文档：
-
-- [CHANGELOG](./CHANGELOG.md)
-- [ROADMAP](./ROADMAP.md)
-- [Contributing](./CONTRIBUTING.md)
-- [Development Notes](./docs/development.md)
-- [Sample Outputs Guide](./docs/sample_outputs.md)
-- [Sanitized Example Artifacts](./examples/README.md)
 
 ---
 
