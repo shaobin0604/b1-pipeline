@@ -1,0 +1,96 @@
+{
+  "pick_date": "2026-03-25",
+  "strategy": "B1",
+  "review_version": "B1 精选打分标准 v1",
+  "reviewed_total": 3,
+  "recommended_total": 2,
+  "watchlist_total": 1,
+  "excluded_total": 0,
+  "recommendations": [
+    {
+      "code": "301182.SZ",
+      "name": "示例股票A",
+      "pick_date": "2026-03-25",
+      "total_score": 104,
+      "grade": "A",
+      "decision": "重点优先审核",
+      "subscores": {
+        "trend_structure": 24,
+        "volume_price": 24,
+        "white_yellow_position": 20,
+        "key_k": 20,
+        "risk_adjustment": 16
+      },
+      "strengths": [
+        "J 值处于低位，回调消化较充分",
+        "价格靠近支撑区，白黄线结构较顺",
+        "缩量特征存在，日内波动可控"
+      ],
+      "risks": [
+        "仍需人工确认上方是否存在明显套牢压力"
+      ],
+      "comment": "结构较完整，优先进入人工精审",
+      "files": {
+        "chart_day": "data/charts/2026-03-25/301182.SZ_day.png",
+        "processed_file": "data/processed/301182.SZ.csv"
+      }
+    },
+    {
+      "code": "600131.SH",
+      "name": "示例股票B",
+      "pick_date": "2026-03-25",
+      "total_score": 98,
+      "grade": "B",
+      "decision": "进入最终人工审核池",
+      "subscores": {
+        "trend_structure": 23,
+        "volume_price": 22,
+        "white_yellow_position": 19,
+        "key_k": 18,
+        "risk_adjustment": 16
+      },
+      "strengths": [
+        "趋势结构尚可",
+        "回调不激进，量价关系偏健康"
+      ],
+      "risks": [
+        "上方历史压力位仍需结合图表确认"
+      ],
+      "comment": "可进备选，但优先级略低于更干净结构",
+      "files": {
+        "chart_day": "data/charts/2026-03-25/600131.SH_day.png",
+        "processed_file": "data/processed/600131.SH.csv"
+      }
+    }
+  ],
+  "watchlist": [
+    {
+      "code": "300498.SZ",
+      "name": "示例股票C",
+      "pick_date": "2026-03-25",
+      "total_score": 76,
+      "grade": "C",
+      "decision": "进入观察名单",
+      "subscores": {
+        "trend_structure": 18,
+        "volume_price": 17,
+        "white_yellow_position": 16,
+        "key_k": 13,
+        "risk_adjustment": 12
+      },
+      "strengths": [
+        "存在一定支撑逻辑"
+      ],
+      "risks": [
+        "结构尚不够干净",
+        "需要进一步确认回调质量"
+      ],
+      "comment": "保留观察，但不宜排得太前",
+      "files": {
+        "chart_day": "data/charts/2026-03-25/300498.SZ_day.png",
+        "processed_file": "data/processed/300498.SZ.csv"
+      }
+    }
+  ],
+  "excluded": []
+}

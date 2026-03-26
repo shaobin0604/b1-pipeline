@@ -80,6 +80,7 @@ b1_pipeline/
 ├─ scripts/         # 可直接运行的入口脚本
 ├─ src/             # 核心代码
 ├─ tests/           # 测试
+├─ examples/        # 脱敏示例输出
 ├─ data/            # 本地数据（已被 git ignore）
 ├─ logs/            # 本地日志（已被 git ignore）
 ├─ docs/            # 额外说明文档
@@ -93,7 +94,8 @@ b1_pipeline/
 
 - [CHANGELOG](./CHANGELOG.md)
 - [ROADMAP](./ROADMAP.md)
-- [Sample Outputs](./docs/sample_outputs.md)
+- [Sample Outputs Guide](./docs/sample_outputs.md)
+- [Sanitized Example Artifacts](./examples/README.md)
 
 ---
 
@@ -166,6 +168,17 @@ py scripts/run_fetch.py --mode full --start-date 2025-01-01 --end-date YYYY-MM-D
 - `incremental`：默认模式，适合日常运行
 - `full`：适合修库、补历史、排障
 - 正常场景下，优先走 `incremental`
+
+---
+
+## 示例输出
+
+如果你只是想先快速理解这个项目会产出什么，而不是立刻跑全流程，可以先看：
+
+- [examples/sample_review_result.json](./examples/sample_review_result.json)
+- [examples/sample_summary.md](./examples/sample_summary.md)
+
+这些文件是 **脱敏示例**，用于展示 review 输出的大致结构，不代表真实交易建议。
 
 ---
 
