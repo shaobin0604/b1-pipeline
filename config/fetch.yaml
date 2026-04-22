@@ -15,5 +15,5 @@ output:
 fetch_options:
   update_mode: "incremental"
   retry_times: 3
-  sleep_seconds: 0.3
+  sleep_seconds: 0.3 # 每分钟最多40次请求。解决请求过快导致的错误（抱歉，您每分钟最多访问该接口50次，权限的具体详情访问：https://tushare.pro/document/1?doc_id=108。），默认值为0.3秒，这里设置为1.5秒
   batch_size: 200
