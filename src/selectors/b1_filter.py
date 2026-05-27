@@ -51,6 +51,12 @@ def is_b1_candidate(row, rules: dict) -> bool:
     if row.get("is_st", False):
         return False
 
+    # ← 新增：板块白名单过滤
+    allowed_boards = rules.get("basic_filter", {}).get("allowed_board_types")
+    if allowed_boards:
+        if _board_limit_type(row.get("code", "")) not in allowed_boards:
+            return False
+        
     if bool(row.get("recent_distribution_within_1m", False)):
         return False
 

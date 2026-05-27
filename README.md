@@ -126,6 +126,13 @@ b1_pipeline/
 
 安装依赖：
 
+使用 uv
+
+```bash
+uv venv
+uv sync --index https://mirrors.aliyun.com/pypi/simple/
+```
+
 ```bash
 pip install -r requirements.txt
 ```

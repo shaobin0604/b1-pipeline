@@ -2,6 +2,8 @@ basic_filter:
   exclude_st: true
   min_market_cap: 2000000000
   require_min_history_days: 120
+  allowed_board_types:         # ← 新增
+    - "limit_10"               # 主板（沪深）
 
 b1_core:
   strategy_name: "B1"
